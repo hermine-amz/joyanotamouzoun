@@ -12,19 +12,23 @@ export function Analytics() {
   const [onlineUsers, setOnlineUsers] = useState(1);
   const hasRecordedVisit = useRef(false);
 
+  // Initialize session synchronously
+  const [sessionId] = useState(() => {
+    let id = localStorage.getItem("joyanot_session_id");
+    if (!id) {
+      id = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2);
+      localStorage.setItem("joyanot_session_id", id);
+    }
+    return id;
+  });
+
   // 1. Record visit
   useEffect(() => {
-    let sessionId = sessionStorage.getItem("joyanot_session_id");
-    if (!sessionId) {
-      sessionId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2);
-      sessionStorage.setItem("joyanot_session_id", sessionId);
-    }
-
     if (!hasRecordedVisit.current) {
       hasRecordedVisit.current = true;
       recordVisit({ data: { sessionId, path: location.pathname } }).catch(console.error);
     }
-  }, [location.pathname]);
+  }, [location.pathname, sessionId]);
 
   // 2. Realtime presence
   useEffect(() => {
@@ -33,7 +37,7 @@ export function Analytics() {
     const channel = supabase.channel("online-users", {
       config: {
         presence: {
-          key: sessionStorage.getItem("joyanot_session_id") || "anonymous",
+          key: sessionId,
         },
       },
     });

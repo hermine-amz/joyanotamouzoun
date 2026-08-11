@@ -250,6 +250,18 @@ function AdminBookFileLink({ fileUrl, filename }: { fileUrl: string; filename: s
   );
 }
 
+function getPublicUrl(row: ContentRow) {
+  switch (row.type) {
+    case "article": return `/actualites`;
+    case "formation": return `/formations`;
+    case "livre":
+    case "produit": return `/boutique`;
+    case "realisation": return `/realisations`;
+    case "page": return row.slug === "accueil" ? "/" : `/${row.slug}`;
+    default: return `/${row.slug}`;
+  }
+}
+
 const inputClass =
   "mt-2 w-full rounded-xl border border-[#EAE6DF] bg-[#FAF7F2] px-4 py-2.5 text-xs normal-case tracking-normal text-slate-700 outline-none transition-all focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent";
 const labelClass =
@@ -270,7 +282,7 @@ function Admin() {
     "overview" | "contents" | "pages" | "media" | "images" | "settings" | "subscribers" | "messages"
   >("overview");
 
-  const [contentsExpanded, setContentsExpanded] = useState(true);
+  const [contentsExpanded, setContentsExpanded] = useState(false);
 
   const [search, setSearch] = useState("");
   const [email, setEmail] = useState<string>("");
@@ -1118,11 +1130,10 @@ function Admin() {
                     {rows.slice(0, 5).map((row) => (
                       <li key={row.id} className="hover:bg-[#FAF7F2]/50 transition-colors">
                         <div className="flex items-center justify-between gap-4 px-6 py-3.5">
-                          <div className="flex items-center gap-3.5 min-w-0">
+                          <a href={getPublicUrl(row)} target="_blank" rel="noreferrer" className="flex items-center gap-3.5 min-w-0 hover:opacity-80 transition-opacity">
                             {row.image_url ? (
-                              <img
-                                src={row.image_url}
-                                alt=""
+                              <AdminImageThumbnail
+                                url={row.image_url}
                                 className="size-10 rounded-lg object-cover border border-[#EAE6DF]/50 bg-[#FAF7F2]"
                               />
                             ) : (
@@ -1143,7 +1154,7 @@ function Admin() {
                                 </span>
                               </span>
                             </div>
-                          </div>
+                          </a>
 
                           <div className="flex items-center gap-3">
                             <span
@@ -1157,12 +1168,6 @@ function Admin() {
                                 ? t({ fr: "En ligne", en: "Live" })
                                 : t({ fr: "Brouillon", en: "Draft" })}
                             </span>
-                            <button
-                              onClick={() => setDraft(toDraft(row))}
-                              className="size-8 rounded-lg border border-[#EAE6DF] hover:border-accent hover:text-accent bg-[#FFFDF9] flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
-                            >
-                              <Pencil className="size-3" />
-                            </button>
                           </div>
                         </div>
                       </li>
@@ -1235,11 +1240,10 @@ function Admin() {
                   return (
                     <li key={row.id} className="hover:bg-[#FAF7F2]/30 transition-colors">
                       <div className="flex items-center justify-between gap-4 px-6 py-4">
-                        <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                        <a href={getPublicUrl(row)} target="_blank" rel="noreferrer" className="flex items-center gap-3.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
                           {row.image_url ? (
-                            <img
-                              src={row.image_url}
-                              alt=""
+                            <AdminImageThumbnail
+                              url={row.image_url}
                               className="size-11 rounded-lg object-cover border border-[#EAE6DF]/50 bg-[#FAF7F2]"
                             />
                           ) : (
@@ -1262,7 +1266,7 @@ function Admin() {
                               <span className="font-mono max-w-[150px] truncate normal-case tracking-normal font-medium text-slate-400">{row.slug}</span>
                             </span>
                           </div>
-                        </div>
+                        </a>
 
                         <div className="flex items-center gap-3">
                           {missing.length > 0 && (

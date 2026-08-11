@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Mail } from "lucide-react";
+import { Mail, Send, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/lang";
@@ -52,43 +52,57 @@ export function Newsletter() {
   };
 
   return (
-    <section className="border-t border-white/10 surface-navy">
-      <div className="mx-auto max-w-2xl px-5 py-14">
+    <section className="border-t border-white/10 surface-navy relative overflow-hidden">
+      <div aria-hidden className="absolute left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 bg-accent/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="mx-auto max-w-2xl px-5 py-20 relative z-10">
         <div className="flex flex-col md:items-center md:text-center">
-          <p className="eyebrow text-accent">Newsletter</p>
-          <h2 className="mt-3 font-display text-2xl text-ivory">
+          <span className="inline-flex items-center justify-center rounded-full bg-accent/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-accent mb-6">
+            Newsletter
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl text-ivory">
             {t({ fr: "Restez informé", en: "Stay informed" })}
           </h2>
-          <span className="gold-rule mt-4 md:mx-auto" />
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-ivory/70">{intro}</p>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-ivory/70">{intro}</p>
         </div>
 
-        <form onSubmit={submit} className="mx-auto mt-8 max-w-md space-y-3">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={100}
-            placeholder={t({ fr: "Votre nom (optionnel)", en: "Your name (optional)" })}
-            className="w-full rounded-sm border border-white/15 bg-white/5 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-accent"
-          />
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <input
-              required
-              type="email"
-              maxLength={254}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t({ fr: "Votre adresse email", en: "Your email address" })}
-              className="flex-1 rounded-sm border border-white/15 bg-white/5 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-accent"
-            />
+        <form onSubmit={submit} className="mx-auto mt-12 max-w-3xl">
+          <div className="flex flex-col md:flex-row gap-2 bg-white/5 border border-white/10 p-2 md:rounded-full rounded-3xl backdrop-blur-md shadow-xl">
+            
+            <div className="flex-1 flex items-center px-4 relative group py-2 md:py-0">
+              <User className="size-4.5 text-ivory/40 group-focus-within:text-accent transition-colors absolute left-4" />
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={100}
+                placeholder={t({ fr: "Nom (optionnel)", en: "Name (optional)" })}
+                className="w-full bg-transparent pl-8 pr-2 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none"
+              />
+            </div>
+            
+            <div className="hidden md:block w-px bg-white/10 my-2" />
+            
+            <div className="flex-[1.5] flex items-center px-4 relative group border-t border-white/10 md:border-t-0 py-3 md:py-0">
+              <Mail className="size-4.5 text-ivory/40 group-focus-within:text-accent transition-colors absolute left-4" />
+              <input
+                required
+                type="email"
+                maxLength={254}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t({ fr: "Votre adresse email", en: "Your email address" })}
+                className="w-full bg-transparent pl-8 pr-2 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none"
+              />
+            </div>
+
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl md:rounded-full bg-accent px-8 py-4 md:py-0 text-sm font-bold text-accent-foreground disabled:opacity-60 transition-all hover:bg-accent/90 shrink-0 hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] w-full md:w-auto"
             >
-              <Mail className="size-4" />
-              {t({ fr: "Je m'inscris", en: "Subscribe" })}
+              {t({ fr: "S'inscrire", en: "Subscribe" })}
+              <Send className="size-4" />
             </button>
+
           </div>
         </form>
       </div>
