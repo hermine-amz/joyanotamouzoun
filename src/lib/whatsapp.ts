@@ -28,5 +28,7 @@ export function useWhatsAppNumber() {
 /** Lien wa.me prêt à l'emploi, avec message pré-rempli optionnel. */
 export function whatsappLink(number: string, text?: string) {
   if (!number) return "";
-  return text ? `https://wa.me/${number}?text=${encodeURIComponent(text)}` : `https://wa.me/${number}`;
+  return text
+    ? `https://wa.me/${number}?text=${encodeURIComponent(text)}`
+    : `https://wa.me/${number}`;
 }

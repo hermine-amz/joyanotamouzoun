@@ -19,16 +19,20 @@ function LatestNews() {
   return (
     <div className="mt-12 grid gap-6 md:grid-cols-3">
       {data.slice(0, 3).map((item) => (
-        <article key={item.id} className="border border-white/10 p-7 transition-colors hover:border-accent/50">
+        <article
+          key={item.id}
+          className="border border-white/10 p-7 transition-colors hover:border-accent/50"
+        >
           <p className="eyebrow text-accent">{resolve(item.excerpt_fr, item.excerpt_en).value}</p>
           <h3 className="mt-4 text-lg text-ivory">{resolve(item.title_fr, item.title_en).value}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-ivory/65">{resolve(item.body_fr, item.body_en).value}</p>
+          <p className="mt-3 text-sm leading-relaxed text-ivory/65">
+            {resolve(item.body_fr, item.body_en).value}
+          </p>
         </article>
       ))}
     </div>
   );
 }
-
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -112,7 +116,9 @@ function Index() {
             {stats.map((stat) => (
               <div key={stat.value} className="px-2 py-8 text-center md:py-10">
                 <p className="font-display text-3xl text-accent md:text-4xl">{stat.value}</p>
-                <p className="mt-2 text-xs uppercase tracking-widest text-ivory/60">{t(stat.label)}</p>
+                <p className="mt-2 text-xs uppercase tracking-widest text-ivory/60">
+                  {t(stat.label)}
+                </p>
               </div>
             ))}
           </div>
@@ -201,7 +207,6 @@ function Index() {
           </Link>
         </div>
         <LatestNews />
-
       </Section>
 
       <Section>

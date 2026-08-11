@@ -33,84 +33,145 @@ export function PagesPanel({
   const pageRows = rows.filter((r) => r.type === "page");
 
   return (
-    <section className="rounded-lg border border-border bg-card p-6">
-      <h2 className="text-lg font-semibold">{t({ fr: "Pages du site", en: "Site pages" })}</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {t({
-          fr: "Modifiez le titre et l'introduction de chaque page, ou ajoutez des blocs de contenu (texte, photos, vidéo, fichier).",
-          en: "Edit each page title and intro, or add content blocks (text, photos, video, file).",
-        })}
-      </p>
+    <section className="rounded-2xl border border-[#EAE6DF] bg-[#FFFDF9] p-6 shadow-xs space-y-6">
+      <div>
+        <h2 className="text-sm font-sans font-bold text-slate-800 uppercase tracking-widest">{t({ fr: "Pages du site", en: "Site pages" })}</h2>
+        <p className="mt-1.5 text-xs text-slate-400 max-w-xl leading-relaxed">
+          {t({
+            fr: "Modifiez le titre et l'introduction de chaque page, ou ajoutez des blocs de contenu (texte, photos, vidéo, fichier).",
+            en: "Edit each page title and intro, or add content blocks (text, photos, video, file).",
+          })}
+        </p>
+      </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="space-y-6">
         {PAGE_KEYS.map((key) => {
           const hero = pageRows.find((r) => r.slug === key);
           const blocks = pageRows.filter((r) => r.slug.startsWith(`${key}/`));
           const nextBlockSlug = `${key}/bloc-${blocks.length + 1}-${Date.now().toString(36).slice(-4)}`;
           const href = key === "accueil" ? "/" : `/${key}`;
           return (
-            <div key={key} className="rounded-lg border border-border p-4">
-              <div className="flex flex-wrap items-center gap-3">
+            <div key={key} className="rounded-2xl border border-[#EAE6DF] bg-[#FFFDF9] p-5 shadow-xs space-y-4">
+              {/* Entête de la page */}
+              <div className="flex items-center justify-between border-b border-[#FAF7F2] pb-3">
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold">{t(PAGE_LABELS[key])}</p>
+                  <h3 className="font-sans font-bold text-slate-800 text-sm flex flex-wrap items-center gap-2">
+                    {t(PAGE_LABELS[key])}
+                    <span className="text-[10px] font-bold bg-[#FAF7F2] text-slate-400 border border-[#EAE6DF] px-2 py-0.5 rounded-full">
+                      {hero ? 1 : 0} {t({ fr: "intro", en: "intro" })} · {blocks.length} {t({ fr: "section(s)", en: "section(s)" })}
+                    </span>
+                  </h3>
                   <a
                     href={href}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-0.5 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-accent"
+                    className="mt-1 inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-accent font-medium transition-colors"
                   >
-                    {href}
+                    {href === "/" ? t({ fr: "Page d'accueil (/) ", en: "Home page (/) " }) : href}
                     <ExternalLink className="size-3" />
                   </a>
                 </div>
+              </div>
+
+              {/* Section 1 : Introduction (En-tête de page) */}
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  {t({ fr: "1. Introduction / En-tête", en: "1. Introduction / Header" })}
+                </h4>
                 {hero ? (
-                  <button
+                  <div 
                     onClick={() => onEdit(hero)}
-                    className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-xs font-semibold hover:border-accent hover:text-accent"
+                    className="group flex items-center justify-between rounded-xl border border-[#EAE6DF] bg-[#FAF7F2]/50 p-3 hover:border-accent/40 hover:bg-white transition-all cursor-pointer"
                   >
-                    <Pencil className="size-3.5" />
-                    {t({ fr: "Modifier l'en-tête", en: "Edit header" })}
-                  </button>
+                    <div className="min-w-0 flex-1 pr-3">
+                      <p className="text-xs font-bold text-slate-800 truncate">
+                        {hero.title_fr || t({ fr: "Titre d'introduction non renseigné", en: "Introduction title empty" })}
+                      </p>
+                      <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                        {hero.excerpt_fr || t({ fr: "Aucune introduction courte", en: "No short description" })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider border ${
+                        hero.published
+                          ? "bg-emerald-50 text-emerald-800 border-emerald-200/20"
+                          : "bg-slate-100 text-slate-400 border-slate-200"
+                      }`}>
+                        {hero.published ? t({ fr: "Publié", en: "Published" }) : t({ fr: "Brouillon", en: "Draft" })}
+                      </span>
+                      <span className="size-7 rounded-lg border border-[#EAE6DF] group-hover:border-accent group-hover:text-accent bg-[#FFFDF9] flex items-center justify-center text-slate-400 transition-colors">
+                        <Pencil className="size-3" />
+                      </span>
+                    </div>
+                  </div>
                 ) : (
                   <button
                     onClick={() => onCreate(key)}
-                    className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-4 py-2 text-xs font-semibold hover:border-accent hover:text-accent"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#EAE6DF] hover:border-accent hover:text-accent bg-[#FFFDF9] py-3 text-xs font-bold text-slate-400 hover:bg-accent/5 transition-all cursor-pointer"
                   >
-                    <Plus className="size-3.5" />
-                    {t({ fr: "Créer l'en-tête", en: "Create header" })}
+                    <Plus className="size-4" />
+                    {t({ fr: "Rédiger l'en-tête d'introduction", en: "Write page introduction" })}
                   </button>
                 )}
-                <button
-                  onClick={() => onCreate(nextBlockSlug)}
-                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
-                >
-                  <Plus className="size-3.5" />
-                  {t({ fr: "Ajouter un bloc", en: "Add block" })}
-                </button>
               </div>
 
-
-              {blocks.length > 0 && (
-                <ul className="mt-3 divide-y divide-border border-t border-border">
-                  {blocks.map((block) => (
-                    <li key={block.id}>
-                      <button
+              {/* Section 2 : Sections de contenu */}
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  {t({ fr: "2. Sections de la page", en: "2. Page sections" })}
+                </h4>
+                
+                {blocks.length > 0 ? (
+                  <div className="space-y-2">
+                    {blocks.map((block, idx) => (
+                      <div
+                        key={block.id}
                         onClick={() => onEdit(block)}
-                        className="flex w-full items-center gap-3 py-2.5 text-left text-sm hover:text-accent"
+                        className="group flex items-center justify-between rounded-xl border border-[#EAE6DF] bg-white p-3 hover:border-accent/40 hover:bg-[#FAF7F2]/20 transition-all cursor-pointer"
                       >
-                        <span className="min-w-0 flex-1 truncate">{block.title_fr}</span>
-                        <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${
-                            block.published ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                          }`}
-                        >
-                          {block.published ? t({ fr: "Publié", en: "Published" }) : t({ fr: "Brouillon", en: "Draft" })}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                        <div className="min-w-0 flex-1 pr-3">
+                          <p className="text-xs font-semibold text-slate-700 truncate">
+                            <span className="text-[10px] text-slate-300 font-bold mr-1.5 font-mono">
+                              #{idx + 1}
+                            </span>
+                            {block.title_fr || t({ fr: "Section sans titre", en: "Untitled section" })}
+                          </p>
+                          {block.excerpt_fr && (
+                            <p className="text-[10px] text-slate-400 truncate mt-0.5 ml-5">
+                              {block.excerpt_fr}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider border ${
+                            block.published
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-200/20"
+                              : "bg-slate-100 text-slate-400 border-slate-200"
+                          }`}>
+                            {block.published ? t({ fr: "Publié", en: "Published" }) : t({ fr: "Brouillon", en: "Draft" })}
+                          </span>
+                          <span className="size-7 rounded-lg border border-[#EAE6DF] group-hover:border-accent group-hover:text-accent bg-[#FFFDF9] flex items-center justify-center text-slate-400 transition-colors">
+                            <Pencil className="size-3" />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-slate-400 italic bg-[#FAF7F2]/30 p-3 rounded-xl border border-[#FAF7F2] text-center">
+                    {t({ fr: "Aucune section de contenu ajoutée.", en: "No content sections added yet." })}
+                  </p>
+                )}
+
+                {/* Bouton pour ajouter un bloc */}
+                <button
+                  onClick={() => onCreate(nextBlockSlug)}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#EAE6DF] hover:border-accent hover:text-accent bg-[#FFFDF9] py-3 text-xs font-bold text-slate-400 hover:bg-accent/5 transition-all cursor-pointer"
+                >
+                  <Plus className="size-4" />
+                  {t({ fr: "Ajouter une section (Texte, images, fichiers...)", en: "Add section (Text, images, files...)" })}
+                </button>
+              </div>
             </div>
           );
         })}

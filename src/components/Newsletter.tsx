@@ -47,7 +47,9 @@ export function Newsletter() {
       );
       return;
     }
-    toast.success(t({ fr: "Inscription confirmée. Merci !", en: "Subscription confirmed. Thank you!" }));
+    toast.success(
+      t({ fr: "Inscription confirmée. Merci !", en: "Subscription confirmed. Thank you!" }),
+    );
     setEmail("");
     setName("");
   };
@@ -94,7 +96,9 @@ export function Newsletter() {
         </div>
 
         <div>
-          <p className="eyebrow text-accent">{t({ fr: "Numéros à télécharger", en: "Issues to download" })}</p>
+          <p className="eyebrow text-accent">
+            {t({ fr: "Numéros à télécharger", en: "Issues to download" })}
+          </p>
           {issues.length === 0 ? (
             <p className="mt-4 text-sm text-ivory/60">
               {t({ fr: "Aucun numéro disponible pour le moment.", en: "No issue available yet." })}
@@ -113,7 +117,9 @@ export function Newsletter() {
                     {excerpt.value && <p className="mt-2 text-sm text-ivory/65">{excerpt.value}</p>}
                     <MediaDownload
                       value={issue.file_url}
-                      label={issue.file_label ?? t({ fr: "Télécharger le numéro", en: "Download issue" })}
+                      label={
+                        issue.file_label ?? t({ fr: "Télécharger le numéro", en: "Download issue" })
+                      }
                     />
                   </li>
                 );

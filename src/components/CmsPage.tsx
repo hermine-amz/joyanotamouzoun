@@ -7,7 +7,6 @@ import { siteSettingsQuery } from "@/lib/site";
 import { pageContentsQuery } from "@/lib/content";
 import type { PageKey } from "@/lib/content";
 
-
 /** Contenus « page » gérés depuis le tableau de bord pour une page donnée. */
 function usePageContents(page: PageKey) {
   const { data = [] } = useQuery(pageContentsQuery(page));
@@ -49,7 +48,6 @@ export function CmsPageHero({
   );
 }
 
-
 /** Blocs libres ajoutés à une page depuis le tableau de bord (slug « page/mon-bloc »). */
 export function CmsBlocks({ page }: { page: PageKey }) {
   const { resolve } = useLang();
@@ -83,7 +81,6 @@ export function CmsBlocks({ page }: { page: PageKey }) {
               <MediaDownload value={block.file_url} label={block.file_label} />
             </div>
           </Section>
-
         );
       })}
     </>

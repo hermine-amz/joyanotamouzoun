@@ -50,11 +50,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const setQty = useCallback((id: string, qty: number) => {
     setItems((prev) =>
-      qty <= 0 ? prev.filter((i) => i.id !== id) : prev.map((i) => (i.id === id ? { ...i, qty } : i)),
+      qty <= 0
+        ? prev.filter((i) => i.id !== id)
+        : prev.map((i) => (i.id === id ? { ...i, qty } : i)),
     );
   }, []);
 
-  const remove = useCallback((id: string) => setItems((prev) => prev.filter((i) => i.id !== id)), []);
+  const remove = useCallback(
+    (id: string) => setItems((prev) => prev.filter((i) => i.id !== id)),
+    [],
+  );
   const clear = useCallback(() => setItems([]), []);
 
   const value = useMemo<CartContextValue>(

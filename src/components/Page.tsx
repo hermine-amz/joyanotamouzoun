@@ -15,8 +15,16 @@ export function PageHero({
     <section className="surface-navy relative overflow-hidden">
       {image && (
         <>
-          <img src={image} alt="" aria-hidden className="absolute inset-0 size-full object-cover opacity-35" />
-          <div aria-hidden className="absolute inset-0 bg-linear-to-r from-navy-deep via-navy-deep/85 to-navy-deep/40" />
+          <img
+            src={image}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 size-full object-cover opacity-35"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-r from-navy-deep via-navy-deep/85 to-navy-deep/40"
+          />
         </>
       )}
       <div
@@ -25,14 +33,17 @@ export function PageHero({
       />
       <div className="relative mx-auto max-w-7xl px-5 py-20 md:py-28">
         <p className="eyebrow animate-soft-fade text-accent">{eyebrow}</p>
-        <h1 className="animate-rise mt-4 max-w-3xl text-4xl leading-tight text-ivory md:text-5xl">{title}</h1>
+        <h1 className="animate-rise mt-4 max-w-3xl text-4xl leading-tight text-ivory md:text-5xl">
+          {title}
+        </h1>
         <span className="gold-rule mt-6" />
-        <p className="animate-rise mt-6 max-w-2xl text-base leading-relaxed text-ivory/70">{description}</p>
+        <p className="animate-rise mt-6 max-w-2xl text-base leading-relaxed text-ivory/70">
+          {description}
+        </p>
       </div>
     </section>
   );
 }
-
 
 export function Section({
   children,
@@ -67,7 +78,9 @@ export function SectionTitle({
   return (
     <div className="max-w-2xl">
       {eyebrow && <p className={`eyebrow ${invert ? "text-accent" : "text-accent"}`}>{eyebrow}</p>}
-      <h2 className={`mt-3 text-3xl md:text-4xl ${invert ? "text-ivory" : "text-foreground"}`}>{title}</h2>
+      <h2 className={`mt-3 text-3xl md:text-4xl ${invert ? "text-ivory" : "text-foreground"}`}>
+        {title}
+      </h2>
       <span className="gold-rule mt-5" />
     </div>
   );

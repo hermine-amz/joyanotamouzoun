@@ -57,27 +57,64 @@ export function MediaVideo({ value, title }: { value?: string | null; title: str
           className="aspect-video w-full border border-border"
         />
       ) : (
-        <video src={url} controls preload="metadata" className="aspect-video w-full border border-border bg-black" />
+        <video
+          src={url}
+          controls
+          preload="metadata"
+          className="aspect-video w-full border border-border bg-black"
+        />
       )}
     </div>
   );
 }
 
-/** Bouton de téléchargement du fichier joint au contenu. */
 export function MediaDownload({ value, label }: { value?: string | null; label?: string | null }) {
-  const url = useMediaUrl(value);
   const { t } = useLang();
-  if (!url) return null;
+  if (!value) return null;
+
+  let urls: string[] = [];
+  try {
+    if (value.startsWith("[") && value.endsWith("]")) {
+      urls = JSON.parse(value);
+    } else if (value.includes(",")) {
+      urls = value.split(",").map((v) => v.trim()).filter(Boolean);
+    } else {
+      urls = [value];
+    }
+  } catch (e) {
+    urls = [value];
+  }
+
+  // Filter out empty URLs
+  urls = urls.filter(Boolean);
+
+  if (urls.length === 0) return null;
+
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      download
-      className="mt-6 inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
-    >
-      <Download className="size-4" />
-      {label?.trim() || t({ fr: "Télécharger le fichier", en: "Download file" })}
-    </a>
+    <div className="mt-6 flex flex-wrap gap-3">
+      {urls.map((urlVal, idx) => {
+        const url = useMediaUrl(urlVal);
+        if (!url) return null;
+
+        const fileLabel =
+          urls.length > 1
+            ? `${label?.trim() || t({ fr: "Télécharger le fichier", en: "Download file" })} #${idx + 1}`
+            : (label?.trim() || t({ fr: "Télécharger le fichier", en: "Download file" }));
+
+        return (
+          <a
+            key={urlVal}
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            download
+            className="inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+          >
+            <Download className="size-4" />
+            {fileLabel}
+          </a>
+        );
+      })}
+    </div>
   );
 }

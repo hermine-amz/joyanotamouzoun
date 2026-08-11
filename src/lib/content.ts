@@ -17,7 +17,6 @@ export const CONTENT_TYPES: { value: ContentType; label: { fr: string; en: strin
   { value: "newsletter", label: { fr: "Newsletter", en: "Newsletter" } },
 ];
 
-
 /** Clés des pages éditables depuis le tableau de bord (slug des contenus de type « page »). */
 export const PAGE_KEYS = [
   "accueil",
@@ -54,7 +53,6 @@ export function pageContentsQuery(page: PageKey) {
     },
   });
 }
-
 
 /** Contenus publiés, lisibles publiquement (RLS : published = true). */
 export function publishedContentsQuery(type: ContentType) {

@@ -37,7 +37,9 @@ export function NewsletterPanel({
             </p>
           </div>
           <button
-            onClick={() => onCreate(`numero-${issues.length + 1}-${Date.now().toString(36).slice(-4)}`)}
+            onClick={() =>
+              onCreate(`numero-${issues.length + 1}-${Date.now().toString(36).slice(-4)}`)
+            }
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
           >
             <Plus className="size-4" />
@@ -65,10 +67,14 @@ export function NewsletterPanel({
                   )}
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${
-                      issue.published ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                      issue.published
+                        ? "bg-primary/10 text-primary"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
-                    {issue.published ? t({ fr: "Publié", en: "Published" }) : t({ fr: "Brouillon", en: "Draft" })}
+                    {issue.published
+                      ? t({ fr: "Publié", en: "Published" })
+                      : t({ fr: "Brouillon", en: "Draft" })}
                   </span>
                   <Pencil className="size-3.5 shrink-0 text-muted-foreground" />
                 </button>

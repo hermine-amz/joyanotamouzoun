@@ -10,10 +10,14 @@ export const Route = createFileRoute("/formations")({
       { title: "Formations — Joyanot AMOUZOUN" },
       {
         name: "description",
-        content: "Catalogue des formations : conception de machines, soudure, gestion d'entreprise artisanale et leadership.",
+        content:
+          "Catalogue des formations : conception de machines, soudure, gestion d'entreprise artisanale et leadership.",
       },
       { property: "og:title", content: "Formations — Joyanot AMOUZOUN" },
-      { property: "og:description", content: "Catalogue complet des formations professionnelles proposées." },
+      {
+        property: "og:description",
+        content: "Catalogue complet des formations professionnelles proposées.",
+      },
       { property: "og:url", content: "/formations" },
     ],
     links: [{ rel: "canonical", href: "/formations" }],
@@ -26,9 +30,13 @@ function Trainings() {
 
   return (
     <>
-      <CmsPageHero page="formations"
+      <CmsPageHero
+        page="formations"
         eyebrow={t({ fr: "Formations", en: "Training" })}
-        title={t({ fr: "Un catalogue orienté métier et résultats", en: "A trade-focused, results-driven catalogue" })}
+        title={t({
+          fr: "Un catalogue orienté métier et résultats",
+          en: "A trade-focused, results-driven catalogue",
+        })}
         description={t({
           fr: "Des programmes courts et opérationnels, animés par un praticien de l'ingénierie et de l'entrepreneuriat.",
           en: "Short, operational programmes led by a practitioner of engineering and entrepreneurship.",

@@ -11,7 +11,8 @@ export const Route = createFileRoute("/boutique")({
       { title: "Boutique — Joyanot AMOUZOUN" },
       {
         name: "description",
-        content: "Ebooks, guides professionnels, formations en ligne et produits numériques de M. Joyanot AMOUZOUN.",
+        content:
+          "Ebooks, guides professionnels, formations en ligne et produits numériques de M. Joyanot AMOUZOUN.",
       },
       { property: "og:title", content: "Boutique — Joyanot AMOUZOUN" },
       { property: "og:description", content: "Ebooks, guides, formations et produits numériques." },
@@ -32,7 +33,10 @@ function Shop() {
       <CmsPageHero
         page="boutique"
         eyebrow={t({ fr: "Boutique", en: "Shop" })}
-        title={t({ fr: "Ressources numériques et formations", en: "Digital resources and training" })}
+        title={t({
+          fr: "Ressources numériques et formations",
+          en: "Digital resources and training",
+        })}
         description={t({
           fr: "Ebooks, guides, plans techniques et formations en ligne, livrés immédiatement après paiement.",
           en: "Ebooks, guides, technical plans and online training, delivered immediately after payment.",

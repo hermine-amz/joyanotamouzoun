@@ -45,7 +45,6 @@ function SiteLogo() {
   );
 }
 
-
 const nav: { to: string; label: LocalizedText }[] = [
   { to: "/", label: { fr: "Accueil", en: "Home" } },
   { to: "/a-propos", label: { fr: "À propos", en: "About" } },
@@ -114,7 +113,9 @@ export function Header() {
                 type="button"
                 onClick={() => setLang(code)}
                 className={`px-2 py-1 text-[11px] font-semibold uppercase tracking-widest transition-colors ${
-                  lang === code ? "bg-accent text-accent-foreground" : "text-ivory/70 hover:text-accent"
+                  lang === code
+                    ? "bg-accent text-accent-foreground"
+                    : "text-ivory/70 hover:text-accent"
                 }`}
               >
                 {code}

@@ -10,7 +10,8 @@ export const Route = createFileRoute("/organisations")({
       { title: "Organisations — Joyanot AMOUZOUN" },
       {
         name: "description",
-        content: "BEVULTA, CNAB, UNAEIB et autres structures dans lesquelles M. Joyanot AMOUZOUN est engagé.",
+        content:
+          "BEVULTA, CNAB, UNAEIB et autres structures dans lesquelles M. Joyanot AMOUZOUN est engagé.",
       },
       { property: "og:title", content: "Organisations — Joyanot AMOUZOUN" },
       { property: "og:description", content: "BEVULTA, CNAB, UNAEIB et autres structures." },
@@ -31,7 +32,10 @@ function Organisations() {
       <CmsPageHero
         page="organisations"
         eyebrow={t({ fr: "Organisations", en: "Organisations" })}
-        title={t({ fr: "Structures et engagements institutionnels", en: "Institutional bodies and commitments" })}
+        title={t({
+          fr: "Structures et engagements institutionnels",
+          en: "Institutional bodies and commitments",
+        })}
         description={t({
           fr: "Des organisations qui structurent l'artisanat, défendent les métiers et accompagnent les entreprises industrielles du Bénin.",
           en: "Organisations that structure the craft sector, defend trades and support Benin's industrial enterprises.",

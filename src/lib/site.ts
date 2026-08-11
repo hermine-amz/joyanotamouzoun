@@ -19,15 +19,27 @@ export const SOCIAL_PLATFORMS = [
 
 /** Réglages éditables depuis le tableau de bord (coordonnées, carte, newsletter). */
 export const SETTING_KEYS = [
-  { key: "contact_email", label: { fr: "Email de contact", en: "Contact email" }, group: "contact" },
+  {
+    key: "contact_email",
+    label: { fr: "Email de contact", en: "Contact email" },
+    group: "contact",
+  },
   { key: "contact_phone", label: { fr: "Téléphone", en: "Phone" }, group: "contact" },
   {
     key: "whatsapp_number",
     label: { fr: "Numéro WhatsApp (chiffres uniquement)", en: "WhatsApp number (digits only)" },
     group: "contact",
   },
-  { key: "contact_address_fr", label: { fr: "Adresse (FR)", en: "Address (FR)" }, group: "contact" },
-  { key: "contact_address_en", label: { fr: "Adresse (EN)", en: "Address (EN)" }, group: "contact" },
+  {
+    key: "contact_address_fr",
+    label: { fr: "Adresse (FR)", en: "Address (FR)" },
+    group: "contact",
+  },
+  {
+    key: "contact_address_en",
+    label: { fr: "Adresse (EN)", en: "Address (EN)" },
+    group: "contact",
+  },
   {
     key: "contact_maps_query",
     label: { fr: "Lieu affiché sur la carte", en: "Location shown on the map" },
@@ -78,12 +90,18 @@ export const SITE_IMAGE_KEYS: {
   {
     key: "image_home_portrait",
     label: { fr: "Accueil — portrait principal", en: "Home — main portrait" },
-    hint: { fr: "Grande photo affichée en haut de la page d'accueil.", en: "Large photo at the top of the home page." },
+    hint: {
+      fr: "Grande photo affichée en haut de la page d'accueil.",
+      en: "Large photo at the top of the home page.",
+    },
   },
   {
     key: "image_home_workshop",
     label: { fr: "Accueil — illustration atelier", en: "Home — workshop illustration" },
-    hint: { fr: "Photo de la section « Savoir-faire ».", en: "Photo in the “Craftsmanship” section." },
+    hint: {
+      fr: "Photo de la section « Savoir-faire ».",
+      en: "Photo in the “Craftsmanship” section.",
+    },
   },
   ...PAGE_IMAGE_LABELS.map((page) => ({
     key: `image_hero_${page.key}`,
@@ -94,9 +112,6 @@ export const SITE_IMAGE_KEYS: {
     },
   })),
 ];
-
-
-
 
 export const siteSettingsQuery = queryOptions({
   queryKey: ["site_settings"],
@@ -143,4 +158,3 @@ export const contactMessagesQuery = queryOptions({
     return data ?? [];
   },
 });
-

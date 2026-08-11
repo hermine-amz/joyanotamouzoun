@@ -1,5 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { Facebook, Globe, Instagram, Linkedin, MessageCircle, Music2, Twitter, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Globe,
+  Instagram,
+  Linkedin,
+  MessageCircle,
+  Music2,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import { socialLinksQuery } from "@/lib/site";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

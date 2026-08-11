@@ -35,7 +35,7 @@ export function MessagesPanel() {
       })
       .join("\n");
     const csvContent = headers + rows;
-    const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], {
+    const blob = new Blob([new Uint8Array([0xef, 0xbb, 0xbf]), csvContent], {
       type: "text/csv;charset=utf-8;",
     });
     const url = URL.createObjectURL(blob);
@@ -68,7 +68,7 @@ export function MessagesPanel() {
           {t({ fr: "Exporter CSV", en: "Export CSV" })}
         </button>
       </div>
-      
+
       <ul className="mt-5 divide-y divide-border">
         {messages.map((m) => (
           <li key={m.id} className="py-4 text-sm space-y-2">
@@ -82,7 +82,10 @@ export function MessagesPanel() {
                 {m.phone && (
                   <>
                     <span className="text-muted-foreground"> · </span>
-                    <a href={`tel:${m.phone}`} className="text-muted-foreground hover:text-foreground">
+                    <a
+                      href={`tel:${m.phone}`}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
                       {m.phone}
                     </a>
                   </>

@@ -83,12 +83,14 @@ export function MediaLibrary() {
     try {
       await Promise.all(
         Array.from(list).map((file) =>
-          uploadMedia(file, target === "auto" ? (isImage(file.name) ? "images" : "fichiers") : target),
+          uploadMedia(
+            file,
+            target === "auto" ? (isImage(file.name) ? "images" : "fichiers") : target,
+          ),
         ),
       );
       refresh();
       toast.success(t({ fr: "Fichiers ajoutés", en: "Files added" }));
-
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
@@ -126,7 +128,6 @@ export function MediaLibrary() {
             ))}
           </select>
           <button
-
             onClick={() => addRef.current?.click()}
             disabled={adding}
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
@@ -134,7 +135,13 @@ export function MediaLibrary() {
             {adding ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
             {t({ fr: "Ajouter", en: "Add" })}
           </button>
-          <input ref={addRef} type="file" multiple hidden onChange={(e) => addFiles(e.target.files)} />
+          <input
+            ref={addRef}
+            type="file"
+            multiple
+            hidden
+            onChange={(e) => addFiles(e.target.files)}
+          />
           <button
             onClick={refresh}
             aria-label={t({ fr: "Actualiser", en: "Refresh" })}
@@ -151,7 +158,9 @@ export function MediaLibrary() {
             key={key}
             onClick={() => setFolder(key)}
             className={`rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest ${
-              folder === key ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground"
+              folder === key
+                ? "bg-primary text-primary-foreground"
+                : "border border-border text-muted-foreground"
             }`}
           >
             {key === "all" ? t({ fr: "Tout", en: "All" }) : key}

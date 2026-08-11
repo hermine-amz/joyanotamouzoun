@@ -232,7 +232,10 @@ export const trainings: {
     },
   },
   {
-    title: { fr: "Leadership pour dirigeants d'organisations", en: "Leadership for organisation leaders" },
+    title: {
+      fr: "Leadership pour dirigeants d'organisations",
+      en: "Leadership for organisation leaders",
+    },
     duration: { fr: "2 jours", en: "2 days" },
     mode: { fr: "Séminaire", en: "Seminar" },
     text: {
@@ -302,7 +305,10 @@ export const shopItems: {
     price: "5 000 FCFA",
   },
   {
-    title: { fr: "Formation en ligne : gestion d'atelier", en: "Online course: workshop management" },
+    title: {
+      fr: "Formation en ligne : gestion d'atelier",
+      en: "Online course: workshop management",
+    },
     type: { fr: "Formation vidéo · 12 modules", en: "Video course · 12 modules" },
     price: "25 000 FCFA",
   },

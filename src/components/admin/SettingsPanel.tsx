@@ -16,7 +16,8 @@ import { normalizeWhatsApp } from "@/lib/whatsapp";
 
 const inputClass =
   "mt-2 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm normal-case tracking-normal text-foreground outline-none transition-colors focus:border-accent";
-const labelClass = "block text-[11px] font-semibold uppercase tracking-widest text-muted-foreground";
+const labelClass =
+  "block text-[11px] font-semibold uppercase tracking-widest text-muted-foreground";
 
 /** Coordonnées du site (email, téléphone, WhatsApp, adresse) et texte de la newsletter. */
 export function ContactSettings({ group = "contact" }: { group?: "contact" | "newsletter" }) {
@@ -110,7 +111,6 @@ export function ContactSettings({ group = "contact" }: { group?: "contact" | "ne
   );
 }
 
-
 /** Ajout, modification, activation et suppression des réseaux sociaux. */
 export function SocialSettings() {
   const { t } = useLang();
@@ -156,7 +156,9 @@ export function SocialSettings() {
     <section className="rounded-lg border border-border bg-card p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold">{t({ fr: "Réseaux sociaux", en: "Social networks" })}</h2>
+          <h2 className="text-lg font-semibold">
+            {t({ fr: "Réseaux sociaux", en: "Social networks" })}
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {t({
               fr: "Facebook, WhatsApp, TikTok… ajoutez, modifiez, désactivez ou supprimez chaque lien.",
@@ -166,7 +168,12 @@ export function SocialSettings() {
         </div>
         <button
           onClick={() =>
-            upsert.mutate({ platform: "facebook", url: "https://", sort_order: links.length + 1, enabled: true })
+            upsert.mutate({
+              platform: "facebook",
+              url: "https://",
+              sort_order: links.length + 1,
+              enabled: true,
+            })
           }
           className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
         >
@@ -299,7 +306,10 @@ export function NewsletterSubscribers() {
   });
 
   const exportCsv = () => {
-    const csv = ["email,nom,date", ...subscribers.map((s) => `${s.email},${s.name ?? ""},${s.created_at}`)].join("\n");
+    const csv = [
+      "email,nom,date",
+      ...subscribers.map((s) => `${s.email},${s.name ?? ""},${s.created_at}`),
+    ].join("\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");
     a.href = url;
@@ -313,7 +323,8 @@ export function NewsletterSubscribers() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">
-            {t({ fr: "Abonnés à la newsletter", en: "Newsletter subscribers" })} ({subscribers.length})
+            {t({ fr: "Abonnés à la newsletter", en: "Newsletter subscribers" })} (
+            {subscribers.length})
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {t({

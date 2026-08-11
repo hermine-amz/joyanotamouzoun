@@ -22,7 +22,6 @@ export function Footer() {
           <SocialLinks className="mt-6" />
         </div>
 
-
         <div>
           <p className="eyebrow text-accent">{t({ fr: "Navigation", en: "Navigation" })}</p>
           <ul className="mt-5 grid grid-cols-2 gap-2 text-sm text-ivory/70">
@@ -54,19 +53,23 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-3">
               <Phone className="mt-0.5 size-4 shrink-0 text-accent" />
-              <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-accent">{phone}</a>
+              <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-accent">
+                {phone}
+              </a>
             </li>
             <li className="flex items-start gap-3">
               <Mail className="mt-0.5 size-4 shrink-0 text-accent" />
-              <a href={`mailto:${email}`} className="hover:text-accent">{email}</a>
+              <a href={`mailto:${email}`} className="hover:text-accent">
+                {email}
+              </a>
             </li>
-
           </ul>
         </div>
       </div>
 
       <div className="border-t border-white/10 py-5 text-center text-xs text-ivory/50">
-        © {new Date().getFullYear()} {person.name}. {t({ fr: "Tous droits réservés.", en: "All rights reserved." })}
+        © {new Date().getFullYear()} {person.name}.{" "}
+        {t({ fr: "Tous droits réservés.", en: "All rights reserved." })}
       </div>
     </footer>
   );

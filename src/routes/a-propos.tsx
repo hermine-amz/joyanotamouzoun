@@ -29,17 +29,27 @@ function About() {
 
   return (
     <>
-      <CmsPageHero page="a-propos"
+      <CmsPageHero
+        page="a-propos"
         eyebrow={t({ fr: "À propos", en: "About" })}
-        title={t({ fr: "Un parcours d'ingénieur au service du collectif", en: "An engineer's path in service of the collective" })}
+        title={t({
+          fr: "Un parcours d'ingénieur au service du collectif",
+          en: "An engineer's path in service of the collective",
+        })}
         description={t(person.intro)}
       />
 
       <Section>
-        <SectionTitle eyebrow={t({ fr: "Biographie", en: "Biography" })} title={t({ fr: "Le parcours", en: "The journey" })} />
+        <SectionTitle
+          eyebrow={t({ fr: "Biographie", en: "Biography" })}
+          title={t({ fr: "Le parcours", en: "The journey" })}
+        />
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {biography.map((paragraph) => (
-            <p key={paragraph.fr} className="text-sm leading-relaxed text-muted-foreground md:text-base">
+            <p
+              key={paragraph.fr}
+              className="text-sm leading-relaxed text-muted-foreground md:text-base"
+            >
               {t(paragraph)}
             </p>
           ))}
@@ -82,30 +92,54 @@ function About() {
       <Section>
         <div className="grid gap-10 md:grid-cols-2">
           <div>
-            <SectionTitle eyebrow={t({ fr: "Formation", en: "Education" })} title={t({ fr: "Diplômes", en: "Degrees" })} />
+            <SectionTitle
+              eyebrow={t({ fr: "Formation", en: "Education" })}
+              title={t({ fr: "Diplômes", en: "Degrees" })}
+            />
             <ul className="mt-8 space-y-4 text-sm text-muted-foreground">
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Ingénierie mécanique — conception et fabrication", en: "Mechanical engineering — design and manufacturing" })}
+                {t({
+                  fr: "Ingénierie mécanique — conception et fabrication",
+                  en: "Mechanical engineering — design and manufacturing",
+                })}
               </li>
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Maintenance industrielle et gestion de production", en: "Industrial maintenance and production management" })}
+                {t({
+                  fr: "Maintenance industrielle et gestion de production",
+                  en: "Industrial maintenance and production management",
+                })}
               </li>
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Gestion d'organisations professionnelles", en: "Professional organisation management" })}
+                {t({
+                  fr: "Gestion d'organisations professionnelles",
+                  en: "Professional organisation management",
+                })}
               </li>
             </ul>
           </div>
           <div>
-            <SectionTitle eyebrow={t({ fr: "Reconnaissance", en: "Recognition" })} title={t({ fr: "Distinctions", en: "Distinctions" })} />
+            <SectionTitle
+              eyebrow={t({ fr: "Reconnaissance", en: "Recognition" })}
+              title={t({ fr: "Distinctions", en: "Distinctions" })}
+            />
             <ul className="mt-8 space-y-4 text-sm text-muted-foreground">
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Reconnaissance des corps de métiers artisanaux du Bénin", en: "Recognition from Benin's craft trade bodies" })}
+                {t({
+                  fr: "Reconnaissance des corps de métiers artisanaux du Bénin",
+                  en: "Recognition from Benin's craft trade bodies",
+                })}
               </li>
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Distinctions pour services rendus à la communauté d'Agla", en: "Distinctions for services to the Agla community" })}
+                {t({
+                  fr: "Distinctions pour services rendus à la communauté d'Agla",
+                  en: "Distinctions for services to the Agla community",
+                })}
               </li>
               <li className="border-l-2 border-accent pl-4">
-                {t({ fr: "Participation à des délégations et forums internationaux", en: "Participation in international delegations and forums" })}
+                {t({
+                  fr: "Participation à des délégations et forums internationaux",
+                  en: "Participation in international delegations and forums",
+                })}
               </li>
             </ul>
           </div>

@@ -69,7 +69,10 @@ function CartPage() {
         <div className="mt-10 border border-border bg-card p-10 text-center">
           <ShoppingBag className="mx-auto size-8 text-accent" />
           <p className="mt-4 text-sm text-muted-foreground">
-            {t({ fr: "Votre panier est vide pour le moment.", en: "Your cart is currently empty." })}
+            {t({
+              fr: "Votre panier est vide pour le moment.",
+              en: "Your cart is currently empty.",
+            })}
           </p>
           <Link
             to="/boutique"
@@ -85,7 +88,9 @@ function CartPage() {
               <li key={item.id} className="flex flex-wrap items-center gap-4 p-5">
                 <div className="min-w-[180px] flex-1">
                   <p className="text-sm font-semibold">{item.title}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{formatPrice(item.price || 0)}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {formatPrice(item.price || 0)}
+                  </p>
                 </div>
                 <div className="flex items-center border border-border">
                   <button
@@ -123,7 +128,9 @@ function CartPage() {
 
           <aside className="h-fit border border-border bg-card p-6">
             <div className="flex items-baseline justify-between border-b border-border pb-4">
-              <span className="eyebrow text-muted-foreground">{t({ fr: "Total", en: "Total" })}</span>
+              <span className="eyebrow text-muted-foreground">
+                {t({ fr: "Total", en: "Total" })}
+              </span>
               <span className="font-display text-2xl text-accent">{formatPrice(total)}</span>
             </div>
 
@@ -161,8 +168,8 @@ function CartPage() {
                     en: "The WhatsApp order number is not configured yet. Please try again later.",
                   })
                 : t({
-                fr: "Vous serez redirigé vers WhatsApp avec le détail de votre commande pour finaliser le paiement (Mobile Money, virement ou espèces).",
-                en: "You will be redirected to WhatsApp with your order details to complete payment (Mobile Money, transfer or cash).",
+                    fr: "Vous serez redirigé vers WhatsApp avec le détail de votre commande pour finaliser le paiement (Mobile Money, virement ou espèces).",
+                    en: "You will be redirected to WhatsApp with your order details to complete payment (Mobile Money, transfer or cash).",
                   })}
             </p>
             <button

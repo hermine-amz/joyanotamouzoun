@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useLocation,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -17,7 +18,8 @@ import { Footer } from "@/components/Footer";
 import { Newsletter } from "@/components/Newsletter";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CartProvider } from "@/lib/cart";
-
+import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@/components/Analytics";
 
 function NotFoundComponent() {
   return (
@@ -141,25 +143,30 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/admin");
+  const isAuth = location.pathname.startsWith("/auth");
+  const hideFooterAndNewsletter = isDashboard || isAuth;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
         <CartProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">
+          <div className={isDashboard ? "h-screen flex flex-col overflow-hidden" : "flex min-h-screen flex-col"}>
+            {!hideFooterAndNewsletter && <Header />}
+            <main className="flex-1 min-h-0">
               {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
               <Outlet />
             </main>
-            <Newsletter />
-            <Footer />
+            {!hideFooterAndNewsletter && <Newsletter />}
+            {!hideFooterAndNewsletter && <Footer />}
 
             <WhatsAppButton />
+            <Toaster />
+            <Analytics />
           </div>
         </CartProvider>
       </LangProvider>
     </QueryClientProvider>
   );
 }
-
