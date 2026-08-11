@@ -14,7 +14,6 @@ export const CONTENT_TYPES: { value: ContentType; label: { fr: string; en: strin
   { value: "realisation", label: { fr: "Réalisation", en: "Achievement" } },
   { value: "experience", label: { fr: "Expérience", en: "Experience" } },
   { value: "organisation", label: { fr: "Organisation", en: "Organisation" } },
-  { value: "newsletter", label: { fr: "Newsletter", en: "Newsletter" } },
 ];
 
 /** Clés des pages éditables depuis le tableau de bord (slug des contenus de type « page »). */

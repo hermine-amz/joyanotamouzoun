@@ -19,16 +19,17 @@ function LatestNews() {
   return (
     <div className="mt-12 grid gap-6 md:grid-cols-3">
       {data.slice(0, 3).map((item) => (
-        <article
+        <Link
+          to="/actualites"
           key={item.id}
-          className="border border-white/10 p-7 transition-colors hover:border-accent/50"
+          className="group rounded-2xl bg-white/5 border border-white/10 p-8 lg:p-10 shadow-lg transition-all duration-300 hover:bg-white/10 hover:border-accent/30 hover:-translate-y-1 flex flex-col text-left"
         >
-          <p className="eyebrow text-accent">{resolve(item.excerpt_fr, item.excerpt_en).value}</p>
-          <h3 className="mt-4 text-lg text-ivory">{resolve(item.title_fr, item.title_en).value}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-ivory/65">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-accent mb-4 line-clamp-1">{resolve(item.excerpt_fr, item.excerpt_en).value}</p>
+          <h3 className="text-xl font-display font-medium text-white group-hover:text-accent transition-colors">{resolve(item.title_fr, item.title_en).value}</h3>
+          <p className="mt-4 text-sm leading-relaxed text-slate-300 font-medium line-clamp-3">
             {resolve(item.body_fr, item.body_en).value}
           </p>
-        </article>
+        </Link>
       ))}
     </div>
   );
@@ -98,15 +99,15 @@ function Index() {
             </div>
           </div>
 
-          <div className="relative">
-            <div aria-hidden className="absolute -inset-3 border border-accent/30" />
+          <div className="relative mx-auto w-full max-w-md lg:max-w-[450px] lg:ml-auto">
+            <div aria-hidden className="absolute -inset-3 lg:-inset-4 border border-accent/30 rounded-2xl" />
             <SiteImage
               settingKey="image_home_portrait"
               fallback={heroPortrait}
               alt={`Portrait officiel de ${person.name}`}
               width={1280}
               height={1600}
-              className="relative aspect-4/5 w-full object-cover"
+              className="relative aspect-[4/5] w-full object-cover rounded-2xl shadow-2xl"
             />
           </div>
         </div>
@@ -134,26 +135,26 @@ function Index() {
           {pillars.map((pillar, i) => (
             <article
               key={pillar.title.fr}
-              className="group border border-border bg-card p-8 transition-shadow hover:shadow-elevated"
+              className="group bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-[#EAE6DF] p-8 lg:p-10 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
             >
-              <span className="flex size-12 items-center justify-center border border-accent/40 text-accent">
+              <span className="flex size-14 items-center justify-center rounded-xl bg-accent/10 text-accent group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-300">
                 {i === 0 ? (
-                  <Wrench className="size-5" />
+                  <Wrench className="size-6" />
                 ) : i === 1 ? (
-                  <Award className="size-5" />
+                  <Award className="size-6" />
                 ) : (
-                  <GraduationCap className="size-5" />
+                  <GraduationCap className="size-6" />
                 )}
               </span>
-              <h3 className="mt-6 text-xl">{t(pillar.title)}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(pillar.text)}</p>
+              <h3 className="mt-8 text-xl font-display font-medium text-slate-900 group-hover:text-accent transition-colors">{t(pillar.title)}</h3>
+              <p className="mt-4 text-sm leading-relaxed text-slate-500 font-medium">{t(pillar.text)}</p>
             </article>
           ))}
         </div>
       </Section>
 
       <Section tone="muted">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-stretch gap-12 lg:grid-cols-2">
           <SiteImage
             settingKey="image_home_workshop"
             fallback={workshop}
@@ -164,9 +165,9 @@ function Index() {
             width={1600}
             height={900}
             loading="lazy"
-            className="w-full object-cover"
+            className="w-full h-full object-cover rounded-2xl shadow-xl border border-[#EAE6DF]"
           />
-          <div>
+          <div className="flex flex-col justify-center">
             <SectionTitle
               eyebrow={t({ fr: "Savoir-faire", en: "Craftsmanship" })}
               title={t({
@@ -174,7 +175,7 @@ function Index() {
                 en: "Engineering in service of craftsmanship",
               })}
             />
-            <p className="mt-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+            <p className="mt-8 text-base leading-relaxed text-slate-600 font-medium md:text-lg">
               {t({
                 fr: "Machines de transformation agroalimentaire, équipements sur mesure, audits techniques et accompagnement d'unités de production : chaque projet vise l'autonomie technologique des entreprises locales.",
                 en: "Agri-food processing machines, bespoke equipment, technical audits and support for production units: every project aims at the technological autonomy of local businesses.",
@@ -182,10 +183,10 @@ function Index() {
             </p>
             <Link
               to="/realisations"
-              className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-sm font-semibold text-foreground transition-colors hover:text-accent"
+              className="mt-10 self-start inline-flex items-center gap-2.5 rounded-xl bg-slate-900 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-slate-800 hover:-translate-y-0.5 shadow-sm group"
             >
               {t({ fr: "Voir les réalisations", en: "View the projects" })}
-              <ArrowRight className="size-4" />
+              <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
@@ -200,46 +201,52 @@ function Index() {
           />
           <Link
             to="/actualites"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-white transition-colors group"
           >
             {t({ fr: "Tout voir", en: "View all" })}
-            <ArrowRight className="size-4" />
+            <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
         <LatestNews />
       </Section>
 
-      <Section>
-        <div className="flex flex-col items-center border border-accent/30 bg-card px-6 py-14 text-center">
-          <BookOpen className="size-8 text-accent" />
-          <h2 className="mt-6 max-w-2xl text-3xl">
-            {t({
-              fr: "Guides professionnels, formations et ressources",
-              en: "Professional guides, training and resources",
-            })}
-          </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {t({
-              fr: "Des contenus conçus pour les artisans, techniciens et dirigeants d'organisations professionnelles.",
-              en: "Content designed for artisans, technicians and leaders of professional organisations.",
-            })}
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/boutique"
-              className="bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
-            >
-              {t({ fr: "Visiter la boutique", en: "Visit the shop" })}
-            </Link>
-            <Link
-              to="/formations"
-              className="border border-primary/30 px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent"
-            >
-              {t({ fr: "Voir les formations", en: "See the training" })}
-            </Link>
+      <section className="bg-background py-8 md:py-12">
+        <div className="mx-auto max-w-7xl px-5">
+          <div className="mx-auto max-w-3xl relative overflow-hidden flex flex-col items-center border border-[#EAE6DF] bg-gradient-to-br from-white to-[#FAF7F2] rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] px-6 py-10 text-center">
+            <div aria-hidden className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+            
+            <div className="flex size-16 items-center justify-center rounded-2xl bg-accent/10 mb-6">
+              <BookOpen className="size-8 text-accent" />
+            </div>
+            <h2 className="max-w-2xl text-3xl md:text-4xl font-display font-medium text-slate-900 leading-tight">
+              {t({
+                fr: "Guides professionnels, formations et ressources",
+                en: "Professional guides, training and resources",
+              })}
+            </h2>
+            <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-600">
+              {t({
+                fr: "Des contenus conçus pour les artisans, techniciens et dirigeants d'organisations professionnelles.",
+                en: "Content designed for artisans, technicians and leaders of professional organisations.",
+              })}
+            </p>
+            <div className="mt-10 flex flex-wrap justify-center gap-4 relative z-10">
+              <Link
+                to="/boutique"
+                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-slate-800 hover:-translate-y-0.5 shadow-sm"
+              >
+                {t({ fr: "Visiter la boutique", en: "Visit the shop" })}
+              </Link>
+              <Link
+                to="/formations"
+                className="inline-flex items-center justify-center rounded-xl border border-[#EAE6DF] bg-white px-8 py-4 text-sm font-bold text-slate-900 transition-all hover:shadow-md hover:-translate-y-0.5"
+              >
+                {t({ fr: "Voir les formations", en: "See the training" })}
+              </Link>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
       <CmsBlocks page="accueil" />
     </>
   );

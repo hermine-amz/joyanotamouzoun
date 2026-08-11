@@ -181,9 +181,9 @@
 @utility eyebrow {
   font-family: var(--font-sans);
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 0.7rem;
-  font-weight: 500;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 800;
 }
 
 @utility gold-rule {

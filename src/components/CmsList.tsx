@@ -17,7 +17,8 @@ function AddToCart({ id, title, price }: { id: string; title: string; price: num
   const [added, setAdded] = useState(false);
 
   return (
-    <div className="mt-5 flex flex-wrap items-center gap-3">
+
+    <div className="mt-4 flex w-full flex-col">
       <button
         type="button"
         onClick={() => {
@@ -25,16 +26,13 @@ function AddToCart({ id, title, price }: { id: string; title: string; price: num
           setAdded(true);
           window.setTimeout(() => setAdded(false), 1800);
         }}
-        className="inline-flex items-center gap-2 rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]"
+        className="inline-flex items-center justify-center gap-2.5 w-full rounded-xl border-2 border-slate-900 bg-slate-900 hover:bg-white hover:text-slate-900 text-white px-5 py-3 text-sm font-bold transition-all duration-200 hover:scale-[1.01]"
       >
         {added ? <Check className="size-4" /> : <ShoppingCart className="size-4" />}
         {added
           ? t({ fr: "Ajouté au panier", en: "Added to cart" })
           : t({ fr: "Ajouter au panier", en: "Add to cart" })}
       </button>
-      <Link to="/panier" className="text-xs uppercase tracking-widest text-accent hover:underline">
-        {t({ fr: "Voir le panier", en: "View cart" })}
-      </Link>
     </div>
   );
 }
@@ -250,7 +248,7 @@ function PackCoverMosaic({ packBooks }: { packBooks: any[] }) {
   );
 }
 
-function BookCard({ item }: { item: any }) {
+function PremiumCard({ item, type }: { item: any; type: ContentType }) {
   const { resolve, t } = useLang();
   const [expanded, setExpanded] = useState(false);
   const whatsappNumber = useWhatsAppNumber();
@@ -268,6 +266,11 @@ function BookCard({ item }: { item: any }) {
   const waMsg = t({
     fr: `Bonjour, je suis intéressé par « ${title.value} »${price ? ` (${price} FCFA${item.promo_price ? " — prix promotionnel" : ""})` : ""}.`,
     en: `Hello, I am interested in "${title.value}"${price ? ` (${price} FCFA${item.promo_price ? " — promo price" : ""})` : ""}.`,
+  });
+
+  const waCourseMsg = t({
+    fr: `Bonjour, je souhaite m'inscrire à la formation « ${title.value} »${price ? ` (prix : ${item.promo_price ? item.promo_price + " FCFA (Promotion)" : item.price + " FCFA"})` : ""}.`,
+    en: `Hello, I would like to register for the training course "${title.value}"${price ? ` (price: ${item.promo_price ? item.promo_price + " FCFA (Promo)" : item.price + " FCFA"})` : ""}.`,
   });
 
   return (
@@ -404,8 +407,15 @@ function BookCard({ item }: { item: any }) {
             </div>
           )}
 
-          {/* Bouton commande élégant — sobre, pas vert, pas de logo */}
-          {whatsappNumber && (
+          {/* Fichier joint si existant (brochure formation, etc) */}
+          {item.file_url && type !== "livre" && (
+            <div className="mb-3">
+              <MediaDownload value={item.file_url} label={item.file_label} />
+            </div>
+          )}
+
+          {/* Bouton commande élégant */}
+          {type === "livre" && whatsappNumber && (
             <a
               href={whatsappLink(whatsappNumber, waMsg)}
               target="_blank"
@@ -415,8 +425,68 @@ function BookCard({ item }: { item: any }) {
               {t({ fr: "Commander cet ouvrage", en: "Order this book" })}
             </a>
           )}
+
+          {type === "formation" && whatsappNumber && (
+            <a
+              href={whatsappLink(whatsappNumber, waCourseMsg)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 w-full rounded-xl border-2 border-slate-900 bg-slate-900 hover:bg-white hover:text-slate-900 text-white px-5 py-3 text-sm font-bold transition-all duration-200 hover:scale-[1.01]"
+            >
+              {t({ fr: "S'inscrire", en: "Register" })}
+            </a>
+          )}
+
+          {type === "produit" && (
+            <AddToCart id={item.id} title={title.value} price={Number(item.promo_price ?? item.price ?? 0)} />
+          )}
         </div>
       </div>
+    </article>
+  );
+}
+
+function ProjectCard({ item }: { item: any }) {
+  const { resolve, t } = useLang();
+  const title = resolve(item.title_fr, item.title_en);
+  const excerpt = resolve(item.excerpt_fr, item.excerpt_en);
+
+  return (
+    <article className="group flex flex-col w-full max-w-sm animate-soft-fade">
+      {item.image_url && (
+        <div className="overflow-hidden w-full aspect-video mb-4 rounded-sm border border-[#EAE6DF]/40">
+          <MediaImage
+            value={item.image_url}
+            alt={title.value}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
+      )}
+      
+      <div className="flex items-center gap-3">
+        <h3 className="text-xl font-display text-slate-900 group-hover:text-accent transition-colors">
+          {title.value}
+        </h3>
+        {title.isFallback && (
+          <span className="border border-accent/40 px-2 py-0.5 text-[8px] uppercase tracking-widest text-accent rounded-sm shrink-0">
+            {t({ fr: "version FR", en: "FR version" })}
+          </span>
+        )}
+      </div>
+      
+      {excerpt.value && (
+        <p className="mt-2.5 text-sm leading-relaxed text-slate-500 font-medium">
+          {excerpt.value}
+        </p>
+      )}
+
+      {/* Affichage des autres médias si l'admin en a ajouté */}
+      {(item.gallery?.length > 0 || item.video_url) && (
+        <div className="mt-4 space-y-4">
+          <MediaGallery items={item.gallery} alt={title.value} />
+          <MediaVideo value={item.video_url} title={title.value} />
+        </div>
+      )}
     </article>
   );
 }
@@ -443,99 +513,23 @@ export function CmsList({ type }: { type: ContentType }) {
     );
   }
 
-  // Mise en page spéciale pour les livres
-  if (type === "livre") {
+  // Mise en page minimaliste pour les réalisations (projets)
+  if (type === "realisation") {
     return (
-      <div className="mb-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [&>*]:max-w-sm [&>*]:w-full justify-items-center">
+      <div className="mb-12 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [&>*]:w-full justify-items-center">
         {data.map((item) => (
-          <BookCard key={item.id} item={item} />
+          <ProjectCard key={item.id} item={item} />
         ))}
       </div>
     );
   }
 
+  // Utilise PremiumCard pour livre, formation et produit
   return (
-    <div className="mb-12 grid gap-6 md:grid-cols-2">
-      {data.map((item) => {
-        const title = resolve(item.title_fr, item.title_en);
-        const excerpt = resolve(item.excerpt_fr, item.excerpt_en);
-        const body = resolve(item.body_fr, item.body_en);
-        const cleanedBody = cleanBodyText(body.value);
-
-        return (
-          <article key={item.id} className="border border-border bg-card p-8 flex flex-col justify-between min-h-[420px]">
-            <div>
-              <MediaImage
-                value={item.image_url}
-                alt={title.value}
-                className="mb-6 aspect-video w-full object-cover"
-              />
-              <div className="flex items-center gap-3">
-                <h2 className="text-xl">{title.value}</h2>
-                {title.isFallback && (
-                  <span className="border border-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-widest text-accent">
-                    {t({ fr: "version FR", en: "FR version" })}
-                  </span>
-                )}
-              </div>
-              {excerpt.value && (
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt.value}</p>
-              )}
-              {cleanedBody && (
-                <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                  {cleanedBody}
-                </p>
-              )}
-
-              <MediaGallery items={item.gallery} alt={title.value} />
-              <MediaVideo value={item.video_url} title={title.value} />
-            </div>
-            
-            <div className="mt-auto">
-              {item.price != null && (
-                <div className="mt-5 flex items-baseline gap-2.5">
-                  {item.promo_price != null ? (
-                    <>
-                      <span className="font-display text-2xl text-accent">{item.promo_price} FCFA</span>
-                      <span className="text-sm text-slate-400 line-through font-medium">{item.price} FCFA</span>
-                    </>
-                  ) : (
-                    <span className="font-display text-2xl text-accent">{item.price} FCFA</span>
-                  )}
-                </div>
-              )}
-
-              <div className="mt-4 flex flex-col gap-3">
-                <MediaDownload value={item.file_url} label={item.file_label} />
-
-                {type === "produit" && (
-                  <AddToCart id={item.id} title={title.value} price={Number(item.promo_price ?? item.price ?? 0)} />
-                )}
-
-                {type === "formation" && whatsappNumber && (
-                  <a
-                    href={whatsappLink(
-                      whatsappNumber,
-                      t({
-                        fr: `Bonjour, je souhaite m'inscrire à la formation « ${title.value} » (prix : ${item.promo_price != null ? item.promo_price + " FCFA (Promotion)" : item.price ? item.price + " FCFA" : "non spécifié"}).`,
-                        en: `Hello, I would like to register for the training course "${title.value}" (price: ${item.promo_price != null ? item.promo_price + " FCFA (Promo)" : item.price ? item.price + " FCFA" : "not specified"}).`,
-                      })
-                    )}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#25D366] hover:bg-[#20ba5a] text-white px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] hover:-translate-y-0.5 w-fit"
-                  >
-                    <svg className="size-4.5 fill-current shrink-0" viewBox="0 0 24 24">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.718-1.464L0 24zm6.59-4.846c1.6.95 3.197 1.451 4.785 1.453 5.424.003 9.835-4.405 9.838-9.833.001-2.628-1.021-5.1-2.879-6.958C16.49 1.958 14.024.935 11.4.935 11.4 0 5.978.935 1.564 10.77c-.001 1.588.497 3.155 1.442 4.743l-.989 3.612 3.7-.971zM17.487 14.28c-.324-.162-1.92-.949-2.217-1.058-.297-.11-.513-.162-.73.162-.216.324-.838 1.058-1.027 1.275-.19.216-.379.243-.703.08-1.229-.615-2.05-1.027-2.859-1.729-.636-.552-1.056-1.229-1.182-1.446-.127-.217-.014-.334.148-.495.147-.146.324-.379.486-.568.162-.19.216-.324.324-.541.108-.217.054-.405-.027-.568-.08-.162-.73-1.758-1.002-2.407-.265-.636-.557-.551-.73-.559-.168-.008-.363-.01-.557-.01-.194 0-.513.073-.783.363-.27.297-1.027 1.002-1.027 2.441s1.054 2.827 1.202 3.03c.148.203 2.072 3.167 5.02 4.444.701.303 1.248.484 1.674.62.705.224 1.347.193 1.854.117.565-.085 1.92-.785 2.19-1.542.27-.758.27-1.407.19-1.542-.08-.135-.297-.216-.621-.379z"/>
-                    </svg>
-                    {t({ fr: "S'inscrire via WhatsApp", en: "Register via WhatsApp" })}
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        );
-      })}
+    <div className="mb-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [&>*]:max-w-sm [&>*]:w-full justify-items-center">
+      {data.map((item) => (
+        <PremiumCard key={item.id} item={item} type={type} />
+      ))}
     </div>
   );
 }

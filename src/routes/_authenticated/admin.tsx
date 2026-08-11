@@ -79,6 +79,8 @@ type Draft = {
   title_en: string;
   excerpt_fr: string;
   excerpt_en: string;
+  duration_fr: string;
+  duration_en: string;
   body_fr: string;
   body_en: string;
   image_url: string;
@@ -99,6 +101,8 @@ const emptyDraft: Draft = {
   title_en: "",
   excerpt_fr: "",
   excerpt_en: "",
+  duration_fr: "",
+  duration_en: "",
   body_fr: "",
   body_en: "",
   image_url: "",
@@ -119,8 +123,10 @@ function toDraft(row: ContentRow): Draft {
     slug: row.slug,
     title_fr: row.title_fr ?? "",
     title_en: row.title_en ?? "",
-    excerpt_fr: row.excerpt_fr ?? "",
-    excerpt_en: row.excerpt_en ?? "",
+    excerpt_fr: (row.excerpt_fr ?? "").includes("===META===") ? (row.excerpt_fr ?? "").split("===META===")[1] : (row.excerpt_fr ?? ""),
+    excerpt_en: (row.excerpt_en ?? "").includes("===META===") ? (row.excerpt_en ?? "").split("===META===")[1] : (row.excerpt_en ?? ""),
+    duration_fr: (row.excerpt_fr ?? "").includes("===META===") ? (row.excerpt_fr ?? "").split("===META===")[0] : "",
+    duration_en: (row.excerpt_en ?? "").includes("===META===") ? (row.excerpt_en ?? "").split("===META===")[0] : "",
     body_fr: row.body_fr ?? "",
     body_en: row.body_en ?? "",
     image_url: row.image_url ?? "",
@@ -467,12 +473,14 @@ function Admin() {
       let title_en = value.title_en.trim();
       let excerpt_en = value.excerpt_en.trim();
       let body_en = value.body_en.trim();
+      let duration_en = value.duration_en?.trim() || "";
 
       const needsTitleTrans = !title_en && value.title_fr.trim();
       const needsExcerptTrans = !excerpt_en && value.excerpt_fr.trim();
+      const needsDurationTrans = value.type === "formation" && !duration_en && value.duration_fr?.trim();
       const needsBodyTrans = !body_en && value.body_fr.trim();
 
-      if (needsTitleTrans || needsExcerptTrans || needsBodyTrans) {
+      if (needsTitleTrans || needsExcerptTrans || needsBodyTrans || needsDurationTrans) {
         toast.info(t({ fr: "Traduction automatique en cours...", en: "Auto-translating to English..." }));
         
         try {
@@ -482,6 +490,9 @@ function Admin() {
           if (needsExcerptTrans) {
             excerpt_en = await translateText(value.excerpt_fr.trim());
           }
+          if (needsDurationTrans) {
+            duration_en = await translateText(value.duration_fr.trim());
+          }
           if (needsBodyTrans) {
             body_en = await translateMarkdown(value.body_fr.trim());
           }
@@ -489,6 +500,7 @@ function Admin() {
           console.error("Auto translation error, using French text as fallback:", e);
           if (needsTitleTrans) title_en = value.title_fr.trim();
           if (needsExcerptTrans) excerpt_en = value.excerpt_fr.trim();
+          if (needsDurationTrans) duration_en = value.duration_fr.trim();
           if (needsBodyTrans) body_en = value.body_fr.trim();
         }
       }
@@ -500,8 +512,12 @@ function Admin() {
         slug: generatedSlug,
         title_fr: value.title_fr.trim(),
         title_en: title_en || null,
-        excerpt_fr: value.excerpt_fr.trim() || null,
-        excerpt_en: excerpt_en || null,
+        excerpt_fr: (value.type === "formation" && value.duration_fr?.trim()) 
+          ? `${value.duration_fr.trim()}===META===${value.excerpt_fr.trim()}` 
+          : (value.excerpt_fr.trim() || null),
+        excerpt_en: (value.type === "formation" && duration_en) 
+          ? `${duration_en}===META===${excerpt_en}` 
+          : (excerpt_en || null),
         body_fr: value.body_fr.trim() || null,
         body_en: body_en || null,
         image_url: value.image_url.trim() || null,
@@ -1589,6 +1605,18 @@ function Admin() {
                     />
                   </label>
 
+                  {draft.type === "formation" && (
+                    <label className={labelClass}>
+                      {t({ fr: "Type et durée (ex: 6 semaines — Présentiel, Cotonou)", en: "Type and duration (e.g., 6 weeks — In-person)" })}
+                      <input
+                        value={draft.duration_fr}
+                        onChange={(e) => update({ duration_fr: e.target.value })}
+                        placeholder="ex: 6 semaines — Présentiel, Cotonou"
+                        className={inputClass}
+                      />
+                    </label>
+                  )}
+
                   <label className={labelClass}>
                     {t({ fr: "Résumé / Description courte", en: "Short summary" })}
                     <textarea
@@ -1600,16 +1628,18 @@ function Admin() {
                     />
                   </label>
 
-                  <label className={labelClass}>
-                    {t({ fr: "Texte / Contenu principal", en: "Body Content" })}
-                    <textarea
-                      rows={12}
-                      value={draft.body_fr}
-                      onChange={(e) => update({ body_fr: e.target.value })}
-                      placeholder="Rédiger la description complète ici..."
-                      className={inputClass}
-                    />
-                  </label>
+                  {draft.type !== "realisation" && (
+                    <label className={labelClass}>
+                      {t({ fr: "Texte / Contenu principal", en: "Body Content" })}
+                      <textarea
+                        rows={12}
+                        value={draft.body_fr}
+                        onChange={(e) => update({ body_fr: e.target.value })}
+                        placeholder="Rédiger la description complète ici..."
+                        className={inputClass}
+                      />
+                    </label>
+                  )}
                 </div>
 
                 {/* Section Spécifique au Pack de Livres */}
@@ -1844,8 +1874,9 @@ function Admin() {
                 </div>
 
                 {/* Les actualités n'ont pas besoin de pièces jointes à télécharger.
-                    Les packs de livres non plus, car les fichiers sont gérés individuellement par livre à l'étape 2. */}
-                {draft.type !== "article" && !(draft.type === "livre" && isPack) && (
+                    Les packs de livres non plus, car les fichiers sont gérés individuellement par livre à l'étape 2.
+                    Les réalisations sont des fiches simples (Titre, Image, Résumé). */}
+                {draft.type !== "article" && draft.type !== "realisation" && !(draft.type === "livre" && isPack) && (
                   <div className="border-t border-[#EAE6DF]/60 pt-6 grid gap-6 sm:grid-cols-2">
                     <MultiFileField
                       label={

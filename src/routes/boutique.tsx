@@ -44,11 +44,7 @@ function Shop() {
       />
 
       <Section>
-        <CmsList type="produit" />
-      </Section>
-
-      <Section>
-        <div className="max-w-3xl">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="text-sm leading-relaxed text-muted-foreground">
             {t({
               fr: "Ajoutez vos articles au panier, puis validez votre commande : vous serez redirigé vers WhatsApp pour convenir du mode de paiement et recevoir vos fichiers.",
@@ -56,6 +52,7 @@ function Shop() {
             })}
           </p>
         </div>
+        <CmsList type="produit" />
       </Section>
       <CmsBlocks page="boutique" />
     </>

@@ -45,12 +45,6 @@ function Trainings() {
 
       <Section>
         <CmsList type="formation" />
-        <Link
-          to="/contact"
-          className="inline-flex border border-primary/30 px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
-        >
-          {t({ fr: "Demander une session", en: "Request a session" })}
-        </Link>
       </Section>
       <CmsBlocks page="formations" />
     </>

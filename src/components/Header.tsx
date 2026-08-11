@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { LayoutDashboard, Menu, ShoppingCart, X } from "lucide-react";
+import { LayoutDashboard, Menu, ShoppingCart, X, ChevronDown } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 import { useLang } from "@/lib/lang";
 import type { LocalizedText } from "@/lib/lang";
@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { siteSettingsQuery } from "@/lib/site";
 import { useMediaUrl } from "@/lib/media";
 import { useCart } from "@/lib/cart";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 /** Accès au panier avec compteur d'articles. */
 function CartLink({ onNavigate }: { onNavigate?: () => void }) {
@@ -19,11 +20,11 @@ function CartLink({ onNavigate }: { onNavigate?: () => void }) {
       to="/panier"
       onClick={onNavigate}
       aria-label="Panier"
-      className="relative flex size-10 items-center justify-center rounded-sm border border-white/15 text-ivory transition-colors hover:text-accent"
+      className="relative flex size-9 items-center justify-center rounded-full text-ivory/70 transition-all hover:bg-white/5 hover:text-ivory"
     >
-      <ShoppingCart className="size-5" />
+      <ShoppingCart className="size-[18px]" />
       {count > 0 && (
-        <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">
+        <span className="absolute -right-1 -top-1 flex size-[18px] items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
           {count}
         </span>
       )}
@@ -70,24 +71,22 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-deep/95 backdrop-blur supports-[backdrop-filter]:bg-navy-deep/80">
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-navy-deep/95 backdrop-blur supports-[backdrop-filter]:bg-navy-deep/80">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5">
-        <Link to="/" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
+        <Link to="/" className="group flex items-center gap-3.5" onClick={() => setOpen(false)}>
           <SiteLogo />
-
-          <span className="leading-tight">
-            <span className="block font-display text-base text-ivory">{person.name}</span>
-            <span className="eyebrow block text-accent/80">Bénin</span>
+          <span className="hidden sm:block font-display text-lg font-medium tracking-wide text-white transition-colors group-hover:text-accent">
+            {person.name}
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-5 xl:flex">
+        <nav className="hidden flex-1 items-center justify-center gap-1 xl:flex">
           {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="text-[13px] font-medium text-ivory/75 transition-colors hover:text-accent"
-              activeProps={{ className: "text-accent" }}
+              className="whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium text-ivory/70 transition-all hover:bg-white/5 hover:text-ivory"
+              activeProps={{ className: "text-ivory bg-white/10 font-semibold" }}
               activeOptions={{ exact: item.to === "/" }}
             >
               {t(item.label)}
@@ -95,33 +94,58 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           {session && (
             <Link
               to="/admin"
-              className="hidden items-center gap-1.5 rounded-sm border border-accent/50 px-3 py-2 text-[11px] font-semibold uppercase tracking-widest text-accent transition-colors hover:bg-accent hover:text-accent-foreground xl:inline-flex"
+              className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-accent px-4 py-1.5 text-[12px] font-semibold text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 xl:inline-flex"
             >
               <LayoutDashboard className="size-4" />
               {t({ fr: "Tableau de bord", en: "Dashboard" })}
             </Link>
           )}
           <CartLink />
-          <div className="flex items-center rounded-sm border border-white/15 p-0.5">
-            {(["fr", "en"] as const).map((code) => (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <button
-                key={code}
                 type="button"
-                onClick={() => setLang(code)}
-                className={`px-2 py-1 text-[11px] font-semibold uppercase tracking-widest transition-colors ${
-                  lang === code
-                    ? "bg-accent text-accent-foreground"
-                    : "text-ivory/70 hover:text-accent"
-                }`}
+                className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold text-ivory/70 transition-all hover:bg-white/5 hover:text-ivory focus:outline-none"
               >
-                {code}
+                {lang === "fr" ? (
+                  <>
+                    <img src="https://flagcdn.com/w20/fr.png" alt="FR" className="h-3 rounded-sm object-cover" />
+                    FR
+                  </>
+                ) : (
+                  <>
+                    <img src="https://flagcdn.com/w20/us.png" alt="EN" className="h-3 rounded-sm object-cover" />
+                    EN
+                  </>
+                )}
+                <ChevronDown className="ml-1 size-3.5 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" strokeWidth={2.5} />
               </button>
-            ))}
-          </div>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="end"
+              className="mt-1 w-[80px] rounded-xl border border-white/10 bg-navy-deep p-1 shadow-xl"
+            >
+              <DropdownMenuItem
+                onClick={() => setLang("fr")}
+                className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-[11px] font-semibold uppercase tracking-widest text-ivory focus:bg-white/10"
+              >
+                <img src="https://flagcdn.com/w20/fr.png" alt="FR" className="h-3 rounded-sm object-cover" />
+                FR
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setLang("en")}
+                className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-[11px] font-semibold uppercase tracking-widest text-ivory focus:bg-white/10"
+              >
+                <img src="https://flagcdn.com/w20/us.png" alt="US" className="h-3 rounded-sm object-cover" />
+                EN
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}

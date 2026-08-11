@@ -12,32 +12,32 @@ export function PageHero({
   image?: string | null;
 }) {
   return (
-    <section className="surface-navy relative overflow-hidden">
+    <section className="bg-slate-900 relative overflow-hidden border-b border-[#EAE6DF]/10">
       {image && (
         <>
           <img
             src={image}
             alt=""
             aria-hidden
-            className="absolute inset-0 size-full object-cover opacity-35"
+            className="absolute inset-0 size-full object-cover opacity-20"
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-linear-to-r from-navy-deep via-navy-deep/85 to-navy-deep/40"
+            className="absolute inset-0 bg-slate-900/80"
           />
         </>
       )}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-accent/10 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-accent/15 blur-[100px]"
       />
-      <div className="relative mx-auto max-w-7xl px-5 py-20 md:py-28">
+      <div className="relative mx-auto max-w-4xl px-5 py-12 md:py-16 text-center flex flex-col items-center">
         <p className="eyebrow animate-soft-fade text-accent">{eyebrow}</p>
-        <h1 className="animate-rise mt-4 max-w-3xl text-4xl leading-tight text-ivory md:text-5xl">
+        <h1 className="animate-rise mt-4 text-3xl leading-tight text-white md:text-5xl font-display font-medium">
           {title}
         </h1>
-        <span className="gold-rule mt-6" />
-        <p className="animate-rise mt-6 max-w-2xl text-base leading-relaxed text-ivory/70">
+        <span className="gold-rule mt-6 mx-auto" />
+        <p className="animate-rise mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-slate-300">
           {description}
         </p>
       </div>
@@ -78,10 +78,10 @@ export function SectionTitle({
   return (
     <div className="max-w-2xl">
       {eyebrow && <p className={`eyebrow ${invert ? "text-accent" : "text-accent"}`}>{eyebrow}</p>}
-      <h2 className={`mt-3 text-3xl md:text-4xl ${invert ? "text-ivory" : "text-foreground"}`}>
+      <h2 className={`mt-4 text-3xl md:text-4xl lg:text-5xl font-display font-medium leading-tight ${invert ? "text-white" : "text-slate-900"}`}>
         {title}
       </h2>
-      <span className="gold-rule mt-5" />
+      <span className="gold-rule mt-6" />
     </div>
   );
 }
