@@ -34,7 +34,7 @@ export function AnalyticsDashboard() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["site_settings"] });
-      toast.success(t({ fr: "Réglage enregistrée", en: "Setting saved" }));
+      toast.success(t({ fr: "Réglage enregistré", en: "Setting saved" }));
     },
     onError: (err) => toast.error(err.message),
   });
