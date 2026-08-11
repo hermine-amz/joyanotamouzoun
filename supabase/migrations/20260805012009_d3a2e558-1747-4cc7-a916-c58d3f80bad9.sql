@@ -1,8 +1,4 @@
-DO $$ BEGIN
-    CREATE TYPE public.app_role AS ENUM ('admin','editor','user');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE public.app_role AS ENUM ('admin','editor','user');
 
 CREATE TABLE public.user_roles (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -21,11 +17,7 @@ RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS
   SELECT EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = _user_id AND role = _role)
 $$;
 
-DO $$ BEGIN
-    CREATE TYPE public.content_type AS ENUM ('article','livre','formation','produit','realisation','page');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE public.content_type AS ENUM ('article','livre','formation','produit','realisation','page');
 
 CREATE TABLE public.contents (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
