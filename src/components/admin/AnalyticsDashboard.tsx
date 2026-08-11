@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Users, Globe, Calendar, Activity, CheckCircle, RefreshCcw } from "lucide-react";
-import { getTotalUsersCount, getVisitsStats } from "@/server/analytics";
+import { getTotalUsersCount, getVisitsStats } from "@/api/analytics";
 import { siteSettingsQuery } from "@/lib/site";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

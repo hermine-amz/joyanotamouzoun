@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { recordVisit } from "@/server/analytics";
+import { recordVisit } from "@/api/analytics";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { siteSettingsQuery } from "@/lib/site";
