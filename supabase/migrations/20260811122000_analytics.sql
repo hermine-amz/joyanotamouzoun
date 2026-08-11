@@ -30,3 +30,10 @@ ON CONFLICT (key) DO NOTHING;
 
 -- Configuration de Supabase Realtime
 -- Il faut activer Realtime pour la base de données (sur les tables si besoin, mais ici on utilisera principalement les Presence Channels qui ne nécessitent pas d'écouter une table spécifique, juste d'activer le module Realtime dans le dashboard).
+
+-- Autoriser la lecture publique de la clé show_online_counter
+CREATE POLICY "Public can read show_online_counter"
+ON public.site_settings
+FOR SELECT
+TO anon, authenticated
+USING (key = 'show_online_counter');
