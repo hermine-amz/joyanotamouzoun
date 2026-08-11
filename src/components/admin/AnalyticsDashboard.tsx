@@ -39,7 +39,7 @@ export function AnalyticsDashboard() {
     onError: (err) => toast.error(err.message),
   });
 
-  const showOnlineCounter = settings?.show_online_counter === "true";
+  const showOnlineCounter = settings?.['show_online_counter'] === "true";
 
   return (
     <div className="space-y-6">

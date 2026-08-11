@@ -28,7 +28,7 @@ export function Analytics() {
 
   // 2. Realtime presence
   useEffect(() => {
-    if (settings?.show_online_counter !== "true") return;
+    if (settings?.['show_online_counter'] !== "true") return;
 
     const channel = supabase.channel("online-users", {
       config: {
@@ -53,9 +53,9 @@ export function Analytics() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [settings?.show_online_counter]);
+  }, [settings?.['show_online_counter']]);
 
-  if (settings?.show_online_counter !== "true") {
+  if (settings?.['show_online_counter'] !== "true") {
     return null;
   }
 

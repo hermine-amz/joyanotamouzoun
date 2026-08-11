@@ -4,8 +4,8 @@ import type { Database } from "@/integrations/supabase/types";
 
 // Helper to get an admin client for server-side only operations
 function getSupabaseAdminClient() {
-  const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env['SUPABASE_URL'] || process.env['VITE_SUPABASE_URL'];
+  const key = process.env['SUPABASE_SERVICE_ROLE_KEY'];
 
   if (!url || !key) {
     throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
@@ -78,7 +78,7 @@ export const getVisitsStats = createServerFn({ method: "GET" })
       let key = "";
       if (period === "day") {
         // e.g. "2026-08-11"
-        key = date.toISOString().split("T")[0];
+        key = date.toISOString().split("T")[0]!;
       } else if (period === "month") {
         // e.g. "2026-08"
         key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
